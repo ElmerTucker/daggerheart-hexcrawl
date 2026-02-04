@@ -1,7 +1,7 @@
 title: Daggerheart Hex Crawl
 description: Daily hex crawl content for Daggerheart TTRPG
-baseurl: ""
-url: "https://elmertucker.github.io/daggerheart-hexcrawl"
+baseurl: "/daggerheart-hexcrawl"
+url: "https://elmertucker.github.io"
 
 # Build settings
 markdown: kramdown
