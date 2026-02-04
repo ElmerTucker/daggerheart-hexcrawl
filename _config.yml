@@ -1,0 +1,23 @@
+title: Daggerheart Hex Crawl
+description: Daily hex crawl content for Daggerheart TTRPG
+baseurl: ""
+url: "https://elmertucker.github.io/daggerheart-hexcrawl"
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-seo-tag
+
+# Collections for hexes
+collections:
+  hexes:
+    output: true
+    permalink: /hexes/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "hexes"
+    values:
+      layout: "hex"

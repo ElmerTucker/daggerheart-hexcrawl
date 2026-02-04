@@ -1,0 +1,29 @@
+---
+layout: default
+title: All Hexes
+---
+
+<div class="hex-index">
+  <h1>Hex Crawl Index</h1>
+
+  {% assign sorted_hexes = site.hexes | sort: "hex_id" | reverse %}
+
+  {% if sorted_hexes.size > 0 %}
+  <ul class="hex-list">
+    {% for hex in sorted_hexes %}
+    <li class="hex-list-item">
+      <a href="{{ hex.url | relative_url }}">
+        <div class="hex-list-title">Hex {{ hex.hex_id }}: {{ hex.title }}</div>
+        <div class="hex-list-meta">
+          <span class="biome-{{ hex.biome | downcase }}">{{ hex.biome | capitalize }}</span>
+          <span>Tier {{ hex.tier }}</span>
+          <span>{{ hex.created_at }}</span>
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No hexes yet. Check back soon!</p>
+  {% endif %}
+</div>

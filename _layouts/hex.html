@@ -1,0 +1,158 @@
+---
+layout: default
+---
+
+<article class="hex-content">
+  <header class="hex-header">
+    <h1>{{ page.title }}</h1>
+    <div class="hex-meta">
+      <span class="hex-id">Hex {{ page.hex_id }}</span>
+      <span class="hex-biome biome-{{ page.biome | downcase }}">{{ page.biome | capitalize }}</span>
+      <span class="hex-tier">Tier {{ page.tier }}</span>
+    </div>
+  </header>
+
+  <section class="hex-description">
+    <h2>Description</h2>
+    {{ page.description | markdownify }}
+  </section>
+
+  {% if page.environment_stat_block %}
+  <section class="stat-block environment-stat-block">
+    <h2>Environment</h2>
+    {% if page.environment_stat_block.damage_thresholds %}
+    <div class="stat-row">
+      <span class="stat-label">Damage Thresholds:</span>
+      <span class="stat-value">
+        Minor {{ page.environment_stat_block.damage_thresholds.minor }} |
+        Major {{ page.environment_stat_block.damage_thresholds.major }} |
+        Severe {{ page.environment_stat_block.damage_thresholds.severe }}
+      </span>
+    </div>
+    {% endif %}
+    {% if page.environment_stat_block.features %}
+    <div class="stat-row">
+      <span class="stat-label">Features:</span>
+      <ul class="stat-list">
+        {% for feature in page.environment_stat_block.features %}
+        <li>{{ feature }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% if page.environment_stat_block.instincts %}
+    <div class="stat-row">
+      <span class="stat-label">Instincts:</span>
+      <ul class="stat-list">
+        {% for instinct in page.environment_stat_block.instincts %}
+        <li>{{ instinct }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  {% if page.encounters and page.encounters.size > 0 %}
+  <section class="hex-encounters">
+    <h2>Encounters</h2>
+    {% for encounter in page.encounters %}
+    <div class="encounter-card">
+      <h3>{{ encounter.name }}</h3>
+      {% if encounter.fear %}
+      <div class="outcome fear">
+        <span class="outcome-label">Fear:</span>
+        <span class="outcome-text">{{ encounter.fear }}</span>
+      </div>
+      {% endif %}
+      {% if encounter.hope %}
+      <div class="outcome hope">
+        <span class="outcome-label">Hope:</span>
+        <span class="outcome-text">{{ encounter.hope }}</span>
+      </div>
+      {% endif %}
+      {% if encounter.adversaries and encounter.adversaries.size > 0 %}
+      <div class="adversaries">
+        <span class="adversaries-label">Adversaries:</span>
+        <ul>
+          {% for adversary in encounter.adversaries %}
+          <li>{{ adversary }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if page.npcs and page.npcs.size > 0 %}
+  <section class="hex-npcs">
+    <h2>NPCs</h2>
+    {% for npc in page.npcs %}
+    <div class="npc-card">
+      <h3>{{ npc.name }}</h3>
+      {% if npc.role %}<p class="npc-role">{{ npc.role }}</p>{% endif %}
+      {% if npc.description %}<p>{{ npc.description }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if page.loot %}
+  <section class="hex-loot">
+    <h2>Loot</h2>
+    {% if page.loot.domain %}
+    <p class="loot-domain">Domain: <strong>{{ page.loot.domain }}</strong></p>
+    {% endif %}
+    {% if page.loot.items and page.loot.items.size > 0 %}
+    <ul class="loot-list">
+      {% for item in page.loot.items %}
+      <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  {% if page.landmarks and page.landmarks.size > 0 %}
+  <section class="hex-landmarks">
+    <h2>Landmarks</h2>
+    <ul>
+      {% for landmark in page.landmarks %}
+      <li>{{ landmark }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  {% if page.travel_hazards and page.travel_hazards.size > 0 %}
+  <section class="hex-hazards">
+    <h2>Travel Hazards</h2>
+    <ul>
+      {% for hazard in page.travel_hazards %}
+      <li>{{ hazard }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  {% if page.community_ties and page.community_ties.size > 0 %}
+  <section class="hex-community">
+    <h2>Community Ties</h2>
+    <ul>
+      {% for tie in page.community_ties %}
+      <li>{{ tie }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  {% if page.tags and page.tags.size > 0 %}
+  <footer class="hex-tags">
+    {% for tag in page.tags %}
+    <span class="tag">{{ tag }}</span>
+    {% endfor %}
+  </footer>
+  {% endif %}
+</article>

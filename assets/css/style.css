@@ -1,0 +1,374 @@
+/* Base styles */
+:root {
+  --color-bg: #1a1a2e;
+  --color-surface: #16213e;
+  --color-primary: #e94560;
+  --color-secondary: #0f3460;
+  --color-text: #eaeaea;
+  --color-text-muted: #a0a0a0;
+  --color-fear: #dc3545;
+  --color-hope: #28a745;
+  --color-border: #2a2a4a;
+  --font-body: 'Segoe UI', system-ui, sans-serif;
+  --font-heading: Georgia, 'Times New Roman', serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Header */
+.site-header {
+  background-color: var(--color-surface);
+  border-bottom: 2px solid var(--color-primary);
+  padding: 1rem 0;
+}
+
+.site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.site-header nav a {
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.site-header nav a:hover {
+  background-color: var(--color-secondary);
+}
+
+/* Main content */
+main {
+  padding: 2rem 0;
+}
+
+/* Footer */
+.site-footer {
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: 1rem 0;
+  margin-top: 3rem;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* Index page */
+.hex-index h1 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-primary);
+}
+
+.hex-list {
+  list-style: none;
+}
+
+.hex-list-item {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hex-list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hex-list-item a {
+  display: block;
+  padding: 1.25rem;
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.hex-list-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.hex-list-meta {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.hex-list-meta span {
+  margin-right: 1rem;
+}
+
+/* Hex page */
+.hex-content {
+  max-width: 100%;
+}
+
+.hex-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.hex-header h1 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+}
+
+.hex-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hex-meta span {
+  background-color: var(--color-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* Biome colors */
+.biome-volcanic { background-color: #7c2d12; }
+.biome-forest { background-color: #166534; }
+.biome-desert { background-color: #a16207; }
+.biome-swamp { background-color: #365314; }
+.biome-mountain { background-color: #44403c; }
+.biome-coast { background-color: #0369a1; }
+.biome-plains { background-color: #65a30d; }
+.biome-tundra { background-color: #0891b2; }
+.biome-urban { background-color: #525252; }
+
+/* Sections */
+.hex-content section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.hex-content h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hex-description p {
+  margin-bottom: 1rem;
+}
+
+/* Stat block */
+.stat-block {
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-primary);
+}
+
+.stat-row {
+  margin-bottom: 0.75rem;
+}
+
+.stat-label {
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.stat-list {
+  list-style: disc;
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.stat-list li {
+  margin-bottom: 0.25rem;
+}
+
+/* Encounters */
+.encounter-card {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.encounter-card:last-child {
+  margin-bottom: 0;
+}
+
+.encounter-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.outcome {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.outcome.fear {
+  background-color: rgba(220, 53, 69, 0.15);
+  border-left: 3px solid var(--color-fear);
+}
+
+.outcome.hope {
+  background-color: rgba(40, 167, 69, 0.15);
+  border-left: 3px solid var(--color-hope);
+}
+
+.outcome-label {
+  font-weight: bold;
+}
+
+.outcome.fear .outcome-label { color: var(--color-fear); }
+.outcome.hope .outcome-label { color: var(--color-hope); }
+
+.adversaries {
+  margin-top: 0.75rem;
+}
+
+.adversaries-label {
+  font-weight: bold;
+  color: var(--color-text-muted);
+}
+
+.adversaries ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+/* NPCs */
+.npc-card {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.npc-card:last-child {
+  margin-bottom: 0;
+}
+
+.npc-card h3 {
+  font-family: var(--font-heading);
+  margin-bottom: 0.5rem;
+}
+
+.npc-role {
+  font-style: italic;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* Loot */
+.loot-domain {
+  margin-bottom: 0.75rem;
+}
+
+.loot-list {
+  list-style: disc;
+  margin-left: 1.5rem;
+}
+
+.loot-list li {
+  margin-bottom: 0.25rem;
+}
+
+/* Generic lists */
+.hex-landmarks ul,
+.hex-hazards ul,
+.hex-community ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+}
+
+.hex-landmarks li,
+.hex-hazards li,
+.hex-community li {
+  margin-bottom: 0.5rem;
+}
+
+/* Tags */
+.hex-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.tag {
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  text-transform: lowercase;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .hex-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .hex-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .hex-meta span {
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .hex-content section {
+    padding: 1rem;
+  }
+
+  .site-header .container {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
