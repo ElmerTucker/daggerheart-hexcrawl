@@ -2,17 +2,12 @@
   "name": "Daggerheart Environment Generator",
   "nodes": [
     {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "generate-environment",
-        "options": {}
-      },
+      "parameters": {},
       "id": "trigger",
-      "name": "Workflow Trigger",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [0, 0],
-      "webhookId": "env-generator"
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [0, 0]
     },
     {
       "parameters": {
@@ -56,22 +51,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [400, 0]
-    },
-    {
-      "parameters": {
-        "respondWith": "json",
-        "responseBody": "={{ JSON.stringify($json) }}",
-        "options": {}
-      },
-      "id": "respond",
-      "name": "Respond to Workflow",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.1,
-      "position": [600, 0]
     }
   ],
   "connections": {
-    "Workflow Trigger": {
+    "When Executed by Another Workflow": {
       "main": [
         [
           {
@@ -98,17 +81,6 @@
         [
           {
             "node": "Validate Environment",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Validate Environment": {
-      "main": [
-        [
-          {
-            "node": "Respond to Workflow",
             "type": "main",
             "index": 0
           }
