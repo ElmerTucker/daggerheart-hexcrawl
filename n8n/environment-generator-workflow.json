@@ -1,0 +1,125 @@
+{
+  "name": "Daggerheart Environment Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generate-environment",
+        "options": {}
+      },
+      "id": "trigger",
+      "name": "Workflow Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "env-generator"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1",
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "id": "openai-model",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [200, -100],
+      "credentials": {
+        "openAiApi": {
+          "id": "OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Generate a Daggerheart environment stat block with these parameters:\n\nName: {{ $json.name }}\nTier: {{ $json.tier }}\nType: {{ $json.type }}\nTheme: {{ $json.theme || 'No specific theme' }}\n\nReturn ONLY valid JSON matching the schema. No markdown, no explanation.",
+        "options": {
+          "systemMessage": "# DAGGERHEART ENVIRONMENT GENERATION GUIDE\n\nYou generate stat blocks for Daggerheart TTRPG environments. Environments represent everything in a scene beyond PCs and adversaries: physical space, background NPCs, and natural forces.\n\n## OUTPUT SCHEMA\n\nReturn this exact JSON structure:\n\n```json\n{\n  \"name\": \"Environment Name\",\n  \"tier\": 1,\n  \"type\": \"Exploration|Social|Traversal|Event\",\n  \"description\": \"One evocative sentence summarizing the environment.\",\n  \"impulses\": [\"Active impulse 1\", \"Active impulse 2\"],\n  \"difficulty\": 11,\n  \"potential_adversaries\": [\"Adversary 1\", \"Adversary 2\"],\n  \"features\": [\n    {\n      \"name\": \"Feature Name\",\n      \"type\": \"Passive\",\n      \"fear_cost\": null,\n      \"description\": \"Mechanical effect description.\",\n      \"questions\": [\"Question for GM inspiration?\"]\n    }\n  ]\n}\n```\n\n## RULES\n\n### Tier and Difficulty\n- Tier 1: Difficulty 10-11, damage 1d6+1 to 1d8+3\n- Tier 2: Difficulty 13-14, damage 2d6+3 to 2d10+2\n- Tier 3: Difficulty 16-17, damage 3d8+3 to 3d10+1\n- Tier 4: Difficulty 19-20, damage 4d8+3 to 4d10+10\n\n### Environment Types\n- **Exploration**: Mystery and discovery. Features focus on investigation, searching, learning.\n- **Social**: Interpersonal challenges. Features focus on Presence rolls, social rules, key figures.\n- **Traversal**: Physical obstacles. Features focus on navigation, movement, environmental hazards.\n- **Event**: Dramatic occurrences. Features focus on exceptional circumstances, unfolding situations.\n\n### Impulses\n- 1-3 narrative goals/behaviors that drive the environment\n- Write as active, present-tense phrases\n- Example: \"Bar crossing, carry away the unready, divide the land\"\n\n### Features\nCreate 3-5 features total, in this order:\n1. **Passive**: Always applies, no cost. Establishes baseline rules.\n2. **Action**: GM uses on their turn. May cost Fear (1-3) for impactful features. Use `fear_cost: 2` or `fear_cost: null` for no cost.\n3. **Reaction**: Triggered by PC actions. Usually no cost.\n\nEach feature MUST have 1-3 questions at the end for GM inspiration.\n\n### Damage by Tier (when features deal damage)\n- Tier 1: 1d6+1 to 1d8+3\n- Tier 2: 2d6+3 to 2d10+2\n- Tier 3: 3d8+3 to 3d10+1\n- Tier 4: 4d8+3 to 4d10+10\n\n### Countdowns\n- Progress Countdowns for PC goals: 4-6 segments\n- Consequence Countdowns for threats: 3-5 segments\n\n## VALIDATION\nBefore returning, verify:\n- Tier matches difficulty\n- Features ordered: Passive, Action, Reaction\n- Each feature has questions array\n- fear_cost is number or null (not string)\n- Description is ONE sentence\n\nReturn ONLY the JSON object. No markdown fences. No explanation."
+        }
+      },
+      "id": "ai-chain",
+      "name": "Generate Environment",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [200, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse and validate environment output\nconst aiOutput = $input.first().json.response || $input.first().json.text || '';\n\nlet envData;\n\ntry {\n  envData = JSON.parse(aiOutput);\n} catch (e) {\n  const jsonMatch = aiOutput.match(/```(?:json)?\\s*([\\s\\S]*?)```/);\n  if (jsonMatch) {\n    envData = JSON.parse(jsonMatch[1].trim());\n  } else {\n    // Try to find JSON object in the text\n    const objMatch = aiOutput.match(/\\{[\\s\\S]*\\}/);\n    if (objMatch) {\n      envData = JSON.parse(objMatch[0]);\n    } else {\n      throw new Error('Could not parse environment JSON');\n    }\n  }\n}\n\n// Validate required fields\nconst required = ['name', 'tier', 'type', 'description', 'impulses', 'difficulty', 'features'];\nfor (const field of required) {\n  if (!envData[field]) {\n    throw new Error(`Missing required field: ${field}`);\n  }\n}\n\n// Ensure features have correct structure\nfor (const feature of envData.features) {\n  if (!feature.name || !feature.type || !feature.description) {\n    throw new Error('Feature missing required fields');\n  }\n  feature.questions = feature.questions || [];\n  if (feature.fear_cost === undefined) {\n    feature.fear_cost = null;\n  }\n}\n\nreturn envData;"
+      },
+      "id": "validate",
+      "name": "Validate Environment",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [400, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond to Workflow",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [600, 0]
+    }
+  ],
+  "connections": {
+    "Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Generate Environment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Environment",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Environment": {
+      "main": [
+        [
+          {
+            "node": "Validate Environment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Environment": {
+      "main": [
+        [
+          {
+            "node": "Respond to Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateId": "daggerheart-environment-generator"
+  }
+}

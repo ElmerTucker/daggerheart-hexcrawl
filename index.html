@@ -15,8 +15,9 @@ title: All Hexes
       <a href="{{ hex.url | relative_url }}">
         <div class="hex-list-title">Hex {{ hex.hex_id }}: {{ hex.title }}</div>
         <div class="hex-list-meta">
-          <span class="biome-{{ hex.biome | downcase }}">{{ hex.biome | capitalize }}</span>
-          <span>Tier {{ hex.tier }}</span>
+          <span class="terrain-{{ hex.terrain_type | downcase | replace: ' ', '-' }}">{{ hex.terrain_type | capitalize }}</span>
+          <span>{{ hex.region }}</span>
+          {% if hex.environment %}<span>Tier {{ hex.environment.tier }}</span>{% endif %}
           <span>{{ hex.created_at }}</span>
         </div>
       </a>

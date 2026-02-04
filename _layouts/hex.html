@@ -7,47 +7,60 @@ layout: default
     <h1>{{ page.title }}</h1>
     <div class="hex-meta">
       <span class="hex-id">Hex {{ page.hex_id }}</span>
-      <span class="hex-biome biome-{{ page.biome | downcase }}">{{ page.biome | capitalize }}</span>
-      <span class="hex-tier">Tier {{ page.tier }}</span>
+      <span class="hex-terrain terrain-{{ page.terrain_type | downcase | replace: ' ', '-' }}">{{ page.terrain_type | capitalize }}</span>
+      <span class="hex-region">{{ page.region }}</span>
     </div>
   </header>
 
-  <section class="hex-description">
-    <h2>Description</h2>
-    {{ page.description | markdownify }}
-  </section>
-
-  {% if page.environment_stat_block %}
+  {% if page.environment %}
   <section class="stat-block environment-stat-block">
-    <h2>Environment</h2>
-    {% if page.environment_stat_block.damage_thresholds %}
+    <header class="stat-block-header">
+      <h2>{{ page.environment.name }}</h2>
+      <div class="stat-block-meta">
+        <span class="env-tier">Tier {{ page.environment.tier }}</span>
+        <span class="env-type">{{ page.environment.type }}</span>
+        <span class="env-difficulty">Difficulty {{ page.environment.difficulty }}</span>
+      </div>
+    </header>
+
+    <p class="env-description">{{ page.environment.description }}</p>
+
+    {% if page.environment.impulses and page.environment.impulses.size > 0 %}
     <div class="stat-row">
-      <span class="stat-label">Damage Thresholds:</span>
-      <span class="stat-value">
-        Minor {{ page.environment_stat_block.damage_thresholds.minor }} |
-        Major {{ page.environment_stat_block.damage_thresholds.major }} |
-        Severe {{ page.environment_stat_block.damage_thresholds.severe }}
-      </span>
+      <span class="stat-label">Impulses:</span>
+      <span class="stat-value">{{ page.environment.impulses | join: "; " }}</span>
     </div>
     {% endif %}
-    {% if page.environment_stat_block.features %}
+
+    {% if page.environment.potential_adversaries and page.environment.potential_adversaries.size > 0 %}
     <div class="stat-row">
-      <span class="stat-label">Features:</span>
-      <ul class="stat-list">
-        {% for feature in page.environment_stat_block.features %}
-        <li>{{ feature }}</li>
-        {% endfor %}
-      </ul>
+      <span class="stat-label">Potential Adversaries:</span>
+      <span class="stat-value">{{ page.environment.potential_adversaries | join: ", " }}</span>
     </div>
     {% endif %}
-    {% if page.environment_stat_block.instincts %}
-    <div class="stat-row">
-      <span class="stat-label">Instincts:</span>
-      <ul class="stat-list">
-        {% for instinct in page.environment_stat_block.instincts %}
-        <li>{{ instinct }}</li>
-        {% endfor %}
-      </ul>
+
+    {% if page.environment.features and page.environment.features.size > 0 %}
+    <div class="features-section">
+      <h3>Features</h3>
+      {% for feature in page.environment.features %}
+      <div class="feature feature-{{ feature.type | downcase }}">
+        <div class="feature-header">
+          <span class="feature-name">{{ feature.name }}</span>
+          <span class="feature-type">{{ feature.type }}</span>
+          {% if feature.fear_cost %}
+          <span class="feature-cost">Fear {{ feature.fear_cost }}</span>
+          {% endif %}
+        </div>
+        <p class="feature-description">{{ feature.description }}</p>
+        {% if feature.questions and feature.questions.size > 0 %}
+        <div class="feature-questions">
+          {% for question in feature.questions %}
+          <em>{{ question }}</em>{% unless forloop.last %} {% endunless %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
     </div>
     {% endif %}
   </section>
@@ -71,18 +84,31 @@ layout: default
         <span class="outcome-text">{{ encounter.hope }}</span>
       </div>
       {% endif %}
-      {% if encounter.adversaries and encounter.adversaries.size > 0 %}
-      <div class="adversaries">
-        <span class="adversaries-label">Adversaries:</span>
-        <ul>
-          {% for adversary in encounter.adversaries %}
-          <li>{{ adversary }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endif %}
     </div>
     {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if page.factions and page.factions.size > 0 %}
+  <section class="hex-factions">
+    <h2>Factions</h2>
+    {% for faction in page.factions %}
+    <div class="faction-card">
+      <h3>{{ faction.name }}</h3>
+      <p>{{ faction.description }}</p>
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if page.points_of_interest and page.points_of_interest.size > 0 %}
+  <section class="hex-poi">
+    <h2>Points of Interest</h2>
+    <ul>
+      {% for poi in page.points_of_interest %}
+      <li>{{ poi }}</li>
+      {% endfor %}
+    </ul>
   </section>
   {% endif %}
 
@@ -99,52 +125,15 @@ layout: default
   </section>
   {% endif %}
 
-  {% if page.loot %}
-  <section class="hex-loot">
-    <h2>Loot</h2>
-    {% if page.loot.domain %}
-    <p class="loot-domain">Domain: <strong>{{ page.loot.domain }}</strong></p>
-    {% endif %}
-    {% if page.loot.items and page.loot.items.size > 0 %}
-    <ul class="loot-list">
-      {% for item in page.loot.items %}
-      <li>{{ item }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </section>
-  {% endif %}
-
-  {% if page.landmarks and page.landmarks.size > 0 %}
-  <section class="hex-landmarks">
-    <h2>Landmarks</h2>
-    <ul>
-      {% for landmark in page.landmarks %}
-      <li>{{ landmark }}</li>
-      {% endfor %}
-    </ul>
-  </section>
-  {% endif %}
-
-  {% if page.travel_hazards and page.travel_hazards.size > 0 %}
-  <section class="hex-hazards">
-    <h2>Travel Hazards</h2>
-    <ul>
-      {% for hazard in page.travel_hazards %}
-      <li>{{ hazard }}</li>
-      {% endfor %}
-    </ul>
-  </section>
-  {% endif %}
-
-  {% if page.community_ties and page.community_ties.size > 0 %}
-  <section class="hex-community">
-    <h2>Community Ties</h2>
-    <ul>
-      {% for tie in page.community_ties %}
-      <li>{{ tie }}</li>
-      {% endfor %}
-    </ul>
+  {% if page.adventure_sites and page.adventure_sites.size > 0 %}
+  <section class="hex-adventure-sites">
+    <h2>Adventure Sites</h2>
+    {% for site in page.adventure_sites %}
+    <div class="adventure-site-card">
+      <h3>{{ site.name }}</h3>
+      <p>{{ site.description }}</p>
+    </div>
+    {% endfor %}
   </section>
   {% endif %}
 

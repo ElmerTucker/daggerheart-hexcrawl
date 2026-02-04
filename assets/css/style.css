@@ -159,16 +159,16 @@ main {
   font-size: 0.875rem;
 }
 
-/* Biome colors */
-.biome-volcanic { background-color: #7c2d12; }
-.biome-forest { background-color: #166534; }
-.biome-desert { background-color: #a16207; }
-.biome-swamp { background-color: #365314; }
-.biome-mountain { background-color: #44403c; }
-.biome-coast { background-color: #0369a1; }
-.biome-plains { background-color: #65a30d; }
-.biome-tundra { background-color: #0891b2; }
-.biome-urban { background-color: #525252; }
+/* Terrain colors */
+.terrain-cavern { background-color: #44403c; }
+.terrain-fungal-forest { background-color: #365314; }
+.terrain-underground-lake { background-color: #0369a1; }
+.terrain-crystal-formation { background-color: #7e22ce; }
+.terrain-ancient-ruins { background-color: #78716c; }
+.terrain-lava-tubes { background-color: #7c2d12; }
+.terrain-bone-fields { background-color: #d6d3d1; color: #1a1a2e; }
+.terrain-moss-gardens { background-color: #166534; }
+.terrain-stalactite-maze { background-color: #525252; }
 
 /* Sections */
 .hex-content section {
@@ -198,6 +198,37 @@ main {
   border: 2px solid var(--color-primary);
 }
 
+.stat-block-header {
+  margin-bottom: 1rem;
+}
+
+.stat-block-header h2 {
+  border-bottom: none;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0;
+}
+
+.stat-block-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.stat-block-meta span {
+  background-color: var(--color-secondary);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.env-description {
+  font-style: italic;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: var(--color-surface);
+  border-radius: 4px;
+}
+
 .stat-row {
   margin-bottom: 0.75rem;
 }
@@ -205,6 +236,10 @@ main {
 .stat-label {
   font-weight: bold;
   color: var(--color-primary);
+}
+
+.stat-value {
+  margin-left: 0.5rem;
 }
 
 .stat-list {
@@ -215,6 +250,85 @@ main {
 
 .stat-list li {
   margin-bottom: 0.25rem;
+}
+
+/* Features */
+.features-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.features-section h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.feature {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.feature:last-child {
+  margin-bottom: 0;
+}
+
+.feature-passive {
+  border-left: 3px solid #6b7280;
+}
+
+.feature-action {
+  border-left: 3px solid var(--color-primary);
+}
+
+.feature-reaction {
+  border-left: 3px solid #f59e0b;
+}
+
+.feature-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.feature-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.feature-type {
+  background-color: var(--color-bg);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.feature-cost {
+  background-color: var(--color-fear);
+  color: white;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.feature-description {
+  margin-bottom: 0.5rem;
+}
+
+.feature-questions {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--color-border);
 }
 
 /* Encounters */
@@ -315,6 +429,7 @@ main {
 }
 
 /* Generic lists */
+.hex-poi ul,
 .hex-landmarks ul,
 .hex-hazards ul,
 .hex-community ul {
@@ -322,9 +437,32 @@ main {
   margin-left: 1.5rem;
 }
 
+.hex-poi li,
 .hex-landmarks li,
 .hex-hazards li,
 .hex-community li {
+  margin-bottom: 0.5rem;
+}
+
+/* Factions and Adventure Sites */
+.faction-card,
+.adventure-site-card {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.faction-card:last-child,
+.adventure-site-card:last-child {
+  margin-bottom: 0;
+}
+
+.faction-card h3,
+.adventure-site-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
   margin-bottom: 0.5rem;
 }
 
