@@ -13,6 +13,20 @@
   --font-heading: Georgia, 'Times New Roman', serif;
 }
 
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg: #fdf6e3;
+    --color-surface: #ede8d5;
+    --color-primary: #a8192f;
+    --color-secondary: #c8bfa0;
+    --color-text: #1a1a2e;
+    --color-text-muted: #5a5a6e;
+    --color-fear: #b91c2c;
+    --color-hope: #1a7a35;
+    --color-border: #c8bfa0;
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
